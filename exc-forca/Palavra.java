@@ -4,28 +4,42 @@ public class Palavra implements Comparable<Palavra>
 
     public Palavra (String texto) throws Exception
     {
-        // verifica se o texto recebido é nulo ou então vazio,
-        // ou seja, sem nenhum caractere, lançando exceção.
-        // armazena o texto recebido em this.texto.
+        if (texto==null || texto.length()==0)
+            throw new Exception ("Texto invalido");
+
+        this.texto=texto;
     }
 
     public int getQuantidade (char letra)
     {
-        // percorre o String this.texto, conta e retorna
-        // quantas letras existem nele iguais a letra fornecida
+        int qtd=0;
+
+        for (int i=0; i<this.texto.length(); i++)
+            if (this.texto.charAt(i)==letra)
+                qtd++;
+
+        return qtd;
     }
 
     public int getPosicaoDaIezimaOcorrencia (int i, char letra) throws Exception
     {
-        // se i==0, retorna a posicao em que ocorre a primeira
-        // aparicao de letra fornecida em this.texto;
-        // se i==1, retorna a posicao em que ocorre a segunda
-        // aparicao de letra fornecida em this.texto;
-        // se i==2, retorna a posicao em que ocorre a terceira
-        // aparicao de letra fornecida em this.texto;
-        // e assim por diante.
-        // lançar excecao caso nao encontre em this.texto
-        // a Iézima aparição da letra fornecida.
+        if (i<0)
+            throw new Exception ("Indice invalido");
+
+        int qtd=0;
+
+        for (int j=0; j<this.texto.length(); j++)
+        {
+            if (this.texto.charAt(j)==letra)
+            {
+                if (qtd==i)
+                    return j;
+
+                qtd++;
+            }
+        }
+
+        throw new Exception ("Ocorrencia inexistente");
     }
 
     public int getTamanho ()
@@ -42,14 +56,21 @@ public class Palavra implements Comparable<Palavra>
     @Override
     public boolean equals (Object obj)
     {
-        // verificar se this e obj possuem o mesmo conteúdo, retornando
-        // true no caso afirmativo ou false no caso negativo
+        if (obj==this) return true;
+        if (obj==null) return false;
+        if (obj.getClass()!=this.getClass()) return false;
+
+        Palavra palavra = (Palavra)obj;
+
+        if (!palavra.texto.equals(this.texto)) return false;
+
+        return true;
     }
 
     @Override
     public int hashCode ()
     {
-        // calcular e retornar o hashcode de this
+        return this.texto.hashCode();
     }
 
     @Override

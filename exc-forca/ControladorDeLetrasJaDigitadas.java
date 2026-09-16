@@ -4,53 +4,88 @@ public class ControladorDeLetrasJaDigitadas implements Cloneable
 
     public ControladorDeLetrasJaDigitadas ()
     {
-        // torna this.letrasJaDigitadas igual ao String vazio
+        this.letrasJaDigitadas="";
     }
 
     public boolean isJaDigitada (char letra)
     {
-        // percorrer o String this.letrasJaDigitadas e verificar se ele
-        // possui a letra fornecida, retornando true em caso afirmativo
-        // ou false em caso negativo
+        for (int i=0; i<this.letrasJaDigitadas.length(); i++)
+            if (this.letrasJaDigitadas.charAt(i)==letra)
+                return true;
+
+        return false;
     }
 
     public void registre (char letra) throws Exception
     {
-        // verifica se a letra fornecida ja foi digitada (pode usar
-        // o método this.isJaDigitada, para isso), lancando uma exceção
-        // em caso afirmativo.
-        // concatena a letra fornecida a this.letrasJaDigitadas.
+        if (this.isJaDigitada(letra))
+            throw new Exception ("Letra ja digitada");
+
+        this.letrasJaDigitadas += letra;
     }
 
     @Override
     public String toString ()
     {
-        // retorna um String com TODAS as letras presentes em
-        // this.letrasJaDigitadas separadas por vírgula (,).
+        String retorno="";
+
+        for (int i=0; i<this.letrasJaDigitadas.length(); i++)
+        {
+            if (i>0)
+                retorno += ",";
+
+            retorno += this.letrasJaDigitadas.charAt(i);
+        }
+
+        return retorno;
     }
 
     @Override
     public boolean equals (Object obj)
     {
-        // verificar se this e obj são iguais
+        if (obj==this) return true;
+        if (obj==null) return false;
+        if (obj.getClass()!=this.getClass()) return false;
+
+        ControladorDeLetrasJaDigitadas controlador =
+        (ControladorDeLetrasJaDigitadas)obj;
+
+        if (!controlador.letrasJaDigitadas.equals(this.letrasJaDigitadas))
+            return false;
+
+        return true;
     }
 
     @Override
     public int hashCode ()
     {
-        // calcular e retornar o hashcode de this
+        return this.letrasJaDigitadas.hashCode();
     }
 
     public ControladorDeLetrasJaDigitadas(
     ControladorDeLetrasJaDigitadas controladorDeLetrasJaDigitadas)
-    throws Exception // construtor de cópia
+    throws Exception
     {
-        // copiar c.letrasJaDigitadas em this.letrasJaDigitadas
+        if (controladorDeLetrasJaDigitadas==null)
+            throw new Exception ("Controlador invalido");
+
+        this.letrasJaDigitadas =
+        controladorDeLetrasJaDigitadas.letrasJaDigitadas;
     }
 
     @Override
     public Object clone ()
     {
-        // criar uma cópia do this com o construtor de cópia e retornar
+        ControladorDeLetrasJaDigitadas retorno=null;
+
+        try
+        {
+            retorno =
+            new ControladorDeLetrasJaDigitadas (this);
+        }
+        catch (Exception erro)
+        {}
+
+        return retorno;
     }
 }
